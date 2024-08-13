@@ -1,11 +1,4 @@
-﻿/* 
- * 1. Greeting
- * 2. Menu
- * 3. Play Game
- * 4. Store history
- */
-
-using MathGame;
+﻿using MathGame;
 
 List<MathProblem> history = [];
 int correctAnswers = 0;
@@ -15,7 +8,27 @@ Console.WriteLine("+---------------------------+");
 Console.WriteLine("| Welcome to the Math Game! |");
 Console.WriteLine("+---------------------------+");
 
+// Main menu loop.
 while (true)
+{
+    displayOptions();
+
+    Console.Write("Your choice: ");
+    string? userInput = Console.ReadLine();
+
+    // Quit game if user enters 'Q'.
+    if (userInput is not null && userInput.ToLower() == "q")
+    {
+        Console.WriteLine("Thank you for playing!");
+        showHistory();
+        break;
+    }
+
+    // Play game based on user input.
+    handleUserChoice(userInput);
+};
+
+void displayOptions()
 {
     Console.WriteLine();
     Console.WriteLine("Please enter a number from the options below, or Q to exit.\n");
@@ -25,15 +38,10 @@ while (true)
     Console.WriteLine("4. Division Problem");
     Console.WriteLine("5. Performance History");
     Console.WriteLine();
+}
 
-    Console.Write("Your choice: ");
-    string? userInput = Console.ReadLine();
-
-    if (userInput is not null && userInput.ToLower() == "q")
-    {
-        break;
-    }
-
+void handleUserChoice(string? userInput)
+{
     bool validChoice = int.TryParse(userInput, out int userChoice) && userChoice is > 0 and <= 5;
 
     if (validChoice)
@@ -46,9 +54,7 @@ while (true)
         Console.WriteLine("Choice must be a number from the list above. Please try again.");
     }
     Console.WriteLine();
-};
-
-Console.WriteLine("Thank you for playing!");
+}
 
 void optionSelect(int userChoice)
 {
@@ -90,10 +96,13 @@ void playProblem(MathProblem problem)
             wrongAnswers++;
             Console.WriteLine($"Wrong. The correct answer is {problem.Result}.");
         }
+
+        // Log this round to the game history.
         history.Add(problem);
     }
     else
     {
+        // Back out to main menu if the player mistypes.
         Console.WriteLine("Invalid input. Try another round.");
     }
 }
