@@ -1,4 +1,5 @@
 ﻿using MathGame;
+using System.Diagnostics;
 
 List<MathProblem> history = [];
 int correctAnswers = 0;
@@ -81,7 +82,13 @@ void optionSelect(int userChoice)
 void playProblem(MathProblem problem)
 {
     Console.Write(problem.ToStringPrompt());
+
+    // Receive the player's response and time taken.
+    Stopwatch stopwatch = new();
+    stopwatch.Start();
     var userInput = Console.ReadLine();
+    stopwatch.Stop();
+    problem.ResponseTime = stopwatch.Elapsed;
 
     if (int.TryParse(userInput, out int userAnswer))
     {
@@ -96,6 +103,8 @@ void playProblem(MathProblem problem)
             wrongAnswers++;
             Console.WriteLine($"Wrong. The correct answer is {problem.Result}.");
         }
+
+        Console.WriteLine($"Answered in {problem.ResponseTime.TotalSeconds:0.00} seconds.");
 
         // Log this round to the game history.
         history.Add(problem);

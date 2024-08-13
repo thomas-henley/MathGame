@@ -26,6 +26,12 @@ internal abstract class MathProblem
 
     public bool WasCorrect {  get; set; }
 
+
+    /// <summary>
+    /// The amount of time taken to answer the problem.
+    /// </summary>
+    public TimeSpan ResponseTime { get; set; }
+
     /// <summary>
     /// Compares the player's guess to the actual answer and stores the attempt.
     /// </summary>
